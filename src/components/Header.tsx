@@ -16,7 +16,7 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-primary">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gold">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-3">
           {/* Logo and School Name */}
@@ -24,13 +24,13 @@ const Header = () => {
             <img
               src={schoolLogo}
               alt="St. Catherine's College Logo"
-              className="h-12 w-12 object-contain"
+              className="h-14 w-14 object-contain"
             />
-            <div className="text-primary-foreground">
+            <div className="text-accent-foreground">
               <h1 className="font-heading text-lg font-bold leading-tight md:text-xl">
                 St. Catherine's College Inc.
               </h1>
-              <p className="text-xs opacity-80">
+              <p className="text-xs opacity-70">
                 6019, Poblacion 1, Carcar City, Cebu
               </p>
             </div>
@@ -42,7 +42,7 @@ const Header = () => {
               <a
                 key={link.name}
                 href={link.href}
-                className="px-3 py-2 text-xs font-medium text-primary-foreground transition-colors hover:text-gold"
+                className="px-3 py-2 text-xs font-medium text-accent-foreground transition-colors hover:text-primary"
               >
                 {link.name}
               </a>
@@ -51,7 +51,7 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden text-primary-foreground p-2"
+            className="lg:hidden text-accent-foreground p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -62,13 +62,13 @@ const Header = () => {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-navy-light">
+        <div className="lg:hidden bg-gold-dark">
           <nav className="container mx-auto px-4 py-4">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="block py-3 text-sm font-medium text-primary-foreground border-b border-primary/20 transition-colors hover:text-gold"
+                className="block py-3 text-sm font-medium text-accent-foreground border-b border-accent-foreground/20 transition-colors hover:text-primary"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.name}
