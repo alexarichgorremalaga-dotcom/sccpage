@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import schoolLogo from "@/assets/school-logo.png";
 
 const navLinks = [
-  { name: "HOME", href: "#" },
+  { name: "HOME", href: "/" },
   { name: "ABOUT US", href: "#about" },
-  { name: "ACADEMICS", href: "#academics" },
+  { name: "ACADEMICS", href: "/academics" },
   { name: "STUDENT AFFAIRS & SERVICES", href: "#services" },
   { name: "ADMISSION", href: "#admission" },
   { name: "NEWS AND EVENTS", href: "#news" },
@@ -39,13 +40,23 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="px-3 py-2 text-xs font-medium text-accent-foreground transition-colors hover:text-primary"
-              >
-                {link.name}
-              </a>
+              link.href.startsWith("/") ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="px-3 py-2 text-xs font-medium text-accent-foreground transition-colors hover:text-primary"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="px-3 py-2 text-xs font-medium text-accent-foreground transition-colors hover:text-primary"
+                >
+                  {link.name}
+                </a>
+              )
             ))}
           </nav>
 
@@ -65,14 +76,25 @@ const Header = () => {
         <div className="lg:hidden bg-gold-dark">
           <nav className="container mx-auto px-4 py-4">
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="block py-3 text-sm font-medium text-accent-foreground border-b border-accent-foreground/20 transition-colors hover:text-primary"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.name}
-              </a>
+              link.href.startsWith("/") ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="block py-3 text-sm font-medium text-accent-foreground border-b border-accent-foreground/20 transition-colors hover:text-primary"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="block py-3 text-sm font-medium text-accent-foreground border-b border-accent-foreground/20 transition-colors hover:text-primary"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </a>
+              )
             ))}
           </nav>
         </div>
