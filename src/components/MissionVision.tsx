@@ -14,9 +14,7 @@ const MissionVision = () => {
               Our Mission
             </h3>
             <p className="text-muted-foreground leading-relaxed">
-              To provide quality Catholic education that develops the whole person 
-              intellectually, spiritually, and morally, preparing students to become 
-              responsible citizens and effective leaders.
+              Inspired by the courage and virtues of St. Catherine of Alexandria and St. Dominic de Guzman, St. Catherine's College is a Catholic educational institution bridging Filipino tradition and global progress, nurturing Christ-like attitudes, and committing itself to excellence in knowledge for holistic transformation.
             </p>
           </div>
 
@@ -29,9 +27,7 @@ const MissionVision = () => {
               Our Vision
             </h3>
             <p className="text-muted-foreground leading-relaxed">
-              A premier Catholic educational institution that forms competent, 
-              compassionate, and Christ-centered individuals who are committed to 
-              the transformation of society.
+              We envision St. Catherine's College as prominent Catholic learning center, dynamic and exemplary in providing research skilled, competent and God-fearing individuals ready for the world of work in the service of God, country and community.
             </p>
           </div>
 
@@ -44,9 +40,7 @@ const MissionVision = () => {
               Core Values
             </h3>
             <p className="text-muted-foreground leading-relaxed">
-              Faith, Excellence, Service, Integrity, and Compassion – guiding 
-              principles that shape our community and inspire our students to 
-              reach their fullest potential.
+              <strong>Compassion</strong> for others • <strong>Conviction</strong> of faith • <strong>Commitment</strong> to harmony • <strong>Christ-centered</strong> in lifestyle • <strong>Competence</strong> and excellence
             </p>
           </div>
         </div>
