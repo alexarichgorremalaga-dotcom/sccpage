@@ -1,13 +1,11 @@
-import campusAerial from "@/assets/campus-aerial.jpg";
-
 const HistorySection = () => {
   return (
     <section className="py-16 md:py-20 bg-background">
       <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="max-w-4xl mx-auto">
           {/* History Content */}
           <div>
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-8">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-8 text-center">
               OUR HISTORY
             </h2>
             
@@ -39,20 +37,6 @@ const HistorySection = () => {
                 concluded in 1930 due to lack of enrollees.
               </p>
             </div>
-          </div>
-
-          {/* Campus Image */}
-          <div className="lg:sticky lg:top-32">
-            <div className="rounded-lg overflow-hidden shadow-xl">
-              <img
-                src={campusAerial}
-                alt="St. Catherine's College Campus Aerial View"
-                className="w-full h-auto object-cover"
-              />
-            </div>
-            <p className="mt-4 text-sm text-muted-foreground text-center italic">
-              Aerial view of St. Catherine's College Campus
-            </p>
           </div>
         </div>
       </div>
