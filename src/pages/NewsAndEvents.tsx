@@ -2,6 +2,10 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Calendar, ChevronDown } from "lucide-react";
+import nutritionMonth1 from "@/assets/nutrition-month-1.jpg";
+import nutritionMonth2 from "@/assets/nutrition-month-2.jpg";
+import nutritionMonth3 from "@/assets/nutrition-month-3.jpg";
+import nutritionMonth4 from "@/assets/nutrition-month-4.jpg";
 import {
   Accordion,
   AccordionContent,
@@ -13,6 +17,7 @@ interface SchoolEvent {
   title: string;
   date?: string;
   description: string;
+  images?: string[];
 }
 
 interface SchoolYear {
@@ -29,6 +34,7 @@ const schoolYears: SchoolYear[] = [
         date: "July 2025",
         description:
           "St. Catherine's College celebrated Nutrition Month, wherein students expressed their creativity and confidence through the Mascot Competition and the Mr. & Ms. Nutrition Month pageant. The event truly showcased the importance of living a healthy lifestyle.",
+        images: [nutritionMonth1, nutritionMonth2, nutritionMonth3, nutritionMonth4],
       },
       {
         title: "Feast of St. Dominic",
@@ -162,6 +168,19 @@ const NewsAndEvents = () => {
                             <p className="text-muted-foreground text-sm leading-relaxed">
                               {event.description}
                             </p>
+                            {event.images && event.images.length > 0 && (
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+                                {event.images.map((img, imgIdx) => (
+                                  <img
+                                    key={imgIdx}
+                                    src={img}
+                                    alt={`${event.title} photo ${imgIdx + 1}`}
+                                    className="rounded-lg w-full h-32 md:h-40 object-cover shadow-sm"
+                                    loading="lazy"
+                                  />
+                                ))}
+                              </div>
+                            )}
                           </article>
                         ))}
                       </div>
