@@ -6,6 +6,15 @@ import nutritionMonth1 from "@/assets/nutrition-month-1.jpg";
 import nutritionMonth2 from "@/assets/nutrition-month-2.jpg";
 import nutritionMonth3 from "@/assets/nutrition-month-3.jpg";
 import nutritionMonth4 from "@/assets/nutrition-month-4.jpg";
+import feastDominic1 from "@/assets/feast-dominic-1.jpg";
+import feastDominic2 from "@/assets/feast-dominic-2.jpg";
+import feastDominic3 from "@/assets/feast-dominic-3.jpg";
+import buwanWika1 from "@/assets/buwan-wika-1.jpg";
+import buwanWika2 from "@/assets/buwan-wika-2.jpg";
+import buwanWika3 from "@/assets/buwan-wika-3.jpg";
+import mamaMary1 from "@/assets/mama-mary-1.jpg";
+import mamaMary2 from "@/assets/mama-mary-2.jpg";
+import mamaMary3 from "@/assets/mama-mary-3.jpg";
 import {
   Accordion,
   AccordionContent,
@@ -38,18 +47,21 @@ const schoolYears: SchoolYear[] = [
       },
       {
         title: "Feast of St. Dominic",
+        images: [feastDominic1, feastDominic2, feastDominic3],
         description:
           "St. Dominic de Guzman is the patron saint of St. Catherine's College. He is the role model of every Catherinean, inspiring them to live with faith, integrity, and compassion, while striving for excellence in all their endeavors. During his feast day, students showcased his life and experiences through a vibrant dance-drama, bringing his teachings and legacy to life. The event highlighted the values he stood for and encouraged students to follow his example in their daily lives.",
       },
       {
         title: "Buwan ng Wika",
         date: "August 2025",
+        images: [buwanWika1, buwanWika2, buwanWika3],
         description:
           "The month of August is dedicated to the Filipino language and culture. Buwan ng Wika was celebrated by Catherineans with love and joy, showing their appreciation for Filipinos. They participated in various contests, such as essay writing (pagsusulat ng sanaysay) and dance competitions, reflecting the richness of Filipino culture and tradition. The celebration also featured cultural presentations and creative performances that highlighted traditional Filipino values and heritage. It was a meaningful event that encouraged students to take pride in their roots while enjoying the spirit of unity.",
       },
       {
         title: "Mama Mary's Birthday",
         date: "September 8",
+        images: [mamaMary1, mamaMary2, mamaMary3],
         description:
           "September 8 marks the birthday of Mama Mary, our Blessed Mother, a guiding light of faith and love. With heartfelt devotion, Catherineans offered hand-written letters and prayed the Rosary in her honor, expressing their love, gratitude, and prayers. It inspires students to emulate her faith and humility.",
       },
