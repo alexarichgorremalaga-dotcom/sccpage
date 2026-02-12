@@ -15,6 +15,15 @@ import buwanWika3 from "@/assets/buwan-wika-3.jpg";
 import mamaMary1 from "@/assets/mama-mary-1.jpg";
 import mamaMary2 from "@/assets/mama-mary-2.jpg";
 import mamaMary3 from "@/assets/mama-mary-3.jpg";
+import scienceMonth1 from "@/assets/science-month-1.jpg";
+import scienceMonth2 from "@/assets/science-month-2.jpg";
+import scienceMonth3 from "@/assets/science-month-3.jpg";
+import rosaryMonth1 from "@/assets/rosary-month-1.jpg";
+import rosaryMonth2 from "@/assets/rosary-month-2.jpg";
+import rosaryMonth3 from "@/assets/rosary-month-3.jpg";
+import divisionMeet1 from "@/assets/division-meet-1.jpg";
+import divisionMeet2 from "@/assets/division-meet-2.jpg";
+import divisionMeet3 from "@/assets/division-meet-3.jpg";
 import {
   Accordion,
   AccordionContent,
@@ -68,18 +77,21 @@ const schoolYears: SchoolYear[] = [
       {
         title: "Science Month Culmination",
         date: "September 2025",
+        images: [scienceMonth1, scienceMonth2, scienceMonth3],
         description:
           "St. Catherine's College celebrated the Science month culmination. The event showcased the creativity and innovative mind of each Catherineans, through different creations and inventions. The Wandering Minds was one of the highlights of the said event, as it discussed dinosaurs — their types and background. Students enjoyed each part of the event while gaining knowledge as well.",
       },
       {
         title: "Rosary Month",
         date: "October 2025",
+        images: [rosaryMonth1, rosaryMonth2, rosaryMonth3],
         description:
           '"The Rosary is the most powerful weapon one can have." The month of October is celebrated as Rosary Month, at St. Catherine\'s College, students prayed the Rosary together in unity and devotion. Through a tableau presentation, students showcased the five luminous mysteries, bringing each scene to life with creativity. The activity helped students reflect on the life of Christ and the teachings of the Church, while fostering a sense of community and spiritual growth among the Catherineans. The celebration emphasized the importance of prayer in daily life and encouraged students to deepen their faith through the Rosary.',
       },
       {
         title: "Division Meet",
         date: "2025",
+        images: [divisionMeet1, divisionMeet2, divisionMeet3],
         description:
           "Catherinean athletes proudly represented St. Catherine's College at the Division Meet 2025. In the different sports, they competed with discipline, courage, and determination, aiming to bring home the gold. Their teamwork, perseverance, and sportsmanship inspired fellow students and showcased the true spirit of being a Catherinean. The event not only highlighted their athletic skills but also strengthened their sense of pride, unity, and school spirit.",
       },
