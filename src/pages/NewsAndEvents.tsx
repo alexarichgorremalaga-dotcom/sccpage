@@ -87,7 +87,28 @@ const schoolYears: SchoolYear[] = [
   },
   {
     year: "2024–2025",
-    events: [],
+    events: [
+      {
+        title: "Christmas Celebration with Kamanggahan Elementary School",
+        description:
+          "SCC celebrates Christmas with Kamanggahan Elementary School — sharing their blessings with love. This meaningful celebration brought smiles to the children and reminded everyone of the true spirit of Christmas—giving and compassion. Through simple gifts and heartfelt moments, SCC was able to spread joy and hope to the young learners. Indeed, Christmas became more special as kindness and generosity were shared with the community.",
+      },
+      {
+        title: "Student Leaders Formation",
+        description:
+          "Catherinean student leaders shaped for better leadership, formed to lead with truth, compassion, and conviction, following the examples of St. Catherine of Alexandria and St. Dominic de Guzman.",
+      },
+      {
+        title: "Palarong Panlungsod",
+        description:
+          "Blue warrior athletes on their way to ace the Palarong Panlungsod. With discipline, determination, and unity, they represented their school with pride and excellence. Their dedication and teamwork reflected months of hard work and training, proving that they were ready to face every challenge with confidence.",
+      },
+      {
+        title: "Clean Up Drive",
+        description:
+          "\"Cleanliness is next to godliness.\" Blue Warriors lived this value by protecting and caring for the environment. As true warriors of nature, they showed that discipline and responsibility begin with respect for God's creation.",
+      },
+    ],
   },
   {
     year: "2023–2024",
