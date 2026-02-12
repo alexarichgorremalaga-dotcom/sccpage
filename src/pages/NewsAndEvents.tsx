@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import { Calendar, ChevronDown } from "lucide-react";
 import nutritionMonth1 from "@/assets/nutrition-month-1.jpg";
 import nutritionMonth2 from "@/assets/nutrition-month-2.jpg";
-import nutritionMonth3 from "@/assets/nutrition-month-3.jpg";
+
 import nutritionMonth4 from "@/assets/nutrition-month-4.jpg";
 import feastDominic1 from "@/assets/feast-dominic-1.jpg";
 import feastDominic2 from "@/assets/feast-dominic-2.jpg";
@@ -52,7 +52,7 @@ const schoolYears: SchoolYear[] = [
         date: "July 2025",
         description:
           "St. Catherine's College celebrated Nutrition Month, wherein students expressed their creativity and confidence through the Mascot Competition and the Mr. & Ms. Nutrition Month pageant. The event truly showcased the importance of living a healthy lifestyle.",
-        images: [nutritionMonth1, nutritionMonth2, nutritionMonth3, nutritionMonth4],
+        images: [nutritionMonth1, nutritionMonth2, nutritionMonth4],
       },
       {
         title: "Feast of St. Dominic",
