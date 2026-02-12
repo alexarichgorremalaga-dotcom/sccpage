@@ -24,6 +24,15 @@ import rosaryMonth3 from "@/assets/rosary-month-3.jpg";
 import divisionMeet1 from "@/assets/division-meet-1.jpg";
 import divisionMeet2 from "@/assets/division-meet-2.jpg";
 import divisionMeet3 from "@/assets/division-meet-3.jpg";
+import welcomingAy1 from "@/assets/welcoming-ay-1.jpg";
+import welcomingAy2 from "@/assets/welcoming-ay-2.jpg";
+import welcomingAy3 from "@/assets/welcoming-ay-3.jpg";
+import cleanupDrive1 from "@/assets/cleanup-drive-1.jpg";
+import cleanupDrive2 from "@/assets/cleanup-drive-2.jpg";
+import cleanupDrive3 from "@/assets/cleanup-drive-3.jpg";
+import teachersDay1 from "@/assets/teachers-day-1.jpg";
+import teachersDay2 from "@/assets/teachers-day-2.jpg";
+import teachersDay3 from "@/assets/teachers-day-3.jpg";
 import {
   Accordion,
   AccordionContent,
@@ -127,17 +136,20 @@ const schoolYears: SchoolYear[] = [
     events: [
       {
         title: "Welcoming Catherinians to a New A.Y.",
+        images: [welcomingAy1, welcomingAy2, welcomingAy3],
         description:
           '"New Students, new Years, new beginnings." Welcoming the new students, to a fun, exciting, educating, and memorable year, here in St. Catherine\'s College.',
       },
       {
         title: "Clean Up Drive",
+        images: [cleanupDrive1, cleanupDrive2, cleanupDrive3],
         description:
           '"Small actions, big impacts." The school strives for a better and cleaner future as the school community cleans the beaches and shores, working together efficiently to provide the people a cleaner and safer experience when visiting the beach.',
       },
       {
         title: "Teacher's Day",
         date: "January 27, 2023",
+        images: [teachersDay1, teachersDay2, teachersDay3],
         description:
           '"Dear second parents, thank you for guiding, disciplining the students to achieve their dreams! Happy teacher\'s day!" We celebrated the teacher\'s efforts in shaping the students to become role models, and to ensure a bright future for the pupils.',
       },
