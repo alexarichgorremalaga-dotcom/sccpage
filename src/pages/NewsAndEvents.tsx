@@ -33,6 +33,9 @@ import cleanupDrive3 from "@/assets/cleanup-drive-3.jpg";
 import teachersDay1 from "@/assets/teachers-day-1.jpg";
 import teachersDay2 from "@/assets/teachers-day-2.jpg";
 import teachersDay3 from "@/assets/teachers-day-3.jpg";
+import palarongPanlungsod1 from "@/assets/palarong-panlungsod-1.jpg";
+import palarongPanlungsod2 from "@/assets/palarong-panlungsod-2.jpg";
+import palarongPanlungsod3 from "@/assets/palarong-panlungsod-3.jpg";
 import {
   Accordion,
   AccordionContent,
@@ -155,6 +158,7 @@ const schoolYears: SchoolYear[] = [
       },
       {
         title: "Mr. & Ms. Palarong Panlungsod",
+        images: [palarongPanlungsod1, palarongPanlungsod2, palarongPanlungsod3],
         description:
           '"Presenting confidence, excellence and character." Show your support as the representatives strive to show their gorgeous, stunning, and attractive features, while also showing their knowledge and empathy to world problems and solutions.',
       },
