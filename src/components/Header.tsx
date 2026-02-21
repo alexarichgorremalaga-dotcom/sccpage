@@ -10,7 +10,7 @@ const navLinks = [
   
   { name: "ADMISSION", href: "/admission" },
   { name: "NEWS AND EVENTS", href: "/news-and-events" },
-  { name: "CONTACT", href: "#contact" },
+  
 ];
 
 const Header = () => {
