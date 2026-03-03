@@ -1,16 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { UserPlus, LogIn } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import GoogleSignInButton from "@/components/GoogleSignInButton";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import type { User } from "@supabase/supabase-js";
 
 type EducationLevel = "basic" | "higher";
 
@@ -21,93 +20,149 @@ interface EnrollmentDialogProps {
 }
 
 const EnrollmentDialog = ({ open, onOpenChange, level }: EnrollmentDialogProps) => {
-  const [user, setUser] = useState<User | null>(null);
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+    familyName: "",
+    firstName: "",
+    email: "",
+  });
 
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        toast({
-          title: "Signed in successfully!",
-          description: `Welcome, ${session.user.email}`,
-        });
-        onOpenChange(false);
-      }
+  const handleChange = (field: string, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSignUp = async () => {
+    if (!form.username || !form.password || !form.familyName || !form.firstName || !form.email) {
+      toast({ title: "Please fill in all fields", variant: "destructive" });
+      return;
+    }
+    if (form.username.length > 15) {
+      toast({ title: "Username must be 15 characters or less", variant: "destructive" });
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.auth.signUp({
+      email: form.email,
+      password: form.password,
+      options: {
+        data: {
+          username: form.username,
+          family_name: form.familyName,
+          first_name: form.firstName,
+        },
+      },
     });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
+    setLoading(false);
 
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
+    if (error) {
+      toast({ title: "Sign-up failed", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Account created!", description: "Please check your email to verify your account." });
+      setForm({ username: "", password: "", familyName: "", firstName: "", email: "" });
+      onOpenChange(false);
+    }
   };
 
   const levelTitle = level === "basic" ? "Basic Education" : "Higher Education";
 
-  if (user) {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="font-heading text-2xl text-center uppercase">
-              {levelTitle}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="text-center py-6 space-y-4">
-            <p className="text-foreground font-medium">
-              Signed in as <span className="text-gold">{user.email}</span>
-            </p>
-            <p className="text-muted-foreground text-sm">
-              Enrollment form coming soon. You'll be notified when it's ready.
-            </p>
-            <Button variant="outline" onClick={handleSignOut} className="mt-4">
-              Sign Out
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="font-heading text-2xl text-center uppercase">
-            {levelTitle}
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+        <DialogHeader className="bg-primary px-6 py-4">
+          <DialogTitle className="font-heading text-lg text-primary-foreground text-center">
+            Sign-up Form to create an ACCOUNT
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
-          {/* New Learners */}
-          <div className="text-center p-6 bg-secondary rounded-lg">
-            <UserPlus className="w-10 h-10 mx-auto mb-3 text-gold" />
-            <h4 className="font-heading font-bold text-foreground mb-1">
-              NEW Learners
-            </h4>
-            <p className="text-muted-foreground text-sm mb-4">
-              Sign up with your Google account
-            </p>
-            <GoogleSignInButton />
+        <div className="bg-accent/40 px-6 py-6 space-y-5">
+          <div className="space-y-1.5">
+            <Label htmlFor="username" className="text-foreground font-medium">
+              Username:
+            </Label>
+            <div className="flex items-center gap-2">
+              <Input
+                id="username"
+                maxLength={15}
+                value={form.username}
+                onChange={(e) => handleChange("username", e.target.value)}
+                className="bg-white border-border"
+              />
+              <span className="text-xs text-muted-foreground whitespace-nowrap">(max. 15 characters)</span>
+            </div>
           </div>
 
-          {/* Old Learners */}
-          <div className="text-center p-6 bg-secondary rounded-lg">
-            <LogIn className="w-10 h-10 mx-auto mb-3 text-gold" />
-            <h4 className="font-heading font-bold text-foreground mb-1">
-              OLD and NEW Learners
-            </h4>
-            <p className="text-muted-foreground text-sm mb-4">
-              Already have an account? Sign in
-            </p>
-            <GoogleSignInButton />
+          <div className="space-y-1.5">
+            <Label htmlFor="password" className="text-foreground font-medium">
+              Password:
+            </Label>
+            <Input
+              id="password"
+              type="password"
+              value={form.password}
+              onChange={(e) => handleChange("password", e.target.value)}
+              className="bg-white border-border max-w-[280px]"
+            />
           </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="familyName" className="text-foreground font-medium">
+              Family Name:
+            </Label>
+            <Input
+              id="familyName"
+              value={form.familyName}
+              onChange={(e) => handleChange("familyName", e.target.value)}
+              className="bg-white border-border"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="firstName" className="text-foreground font-medium">
+              First Name:
+            </Label>
+            <Input
+              id="firstName"
+              value={form.firstName}
+              onChange={(e) => handleChange("firstName", e.target.value)}
+              className="bg-white border-border"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="email" className="text-foreground font-medium">
+              Email add:
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              value={form.email}
+              onChange={(e) => handleChange("email", e.target.value)}
+              className="bg-white border-border"
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center gap-4 bg-accent/60 px-6 py-3">
+          <Button
+            onClick={handleSignUp}
+            disabled={loading}
+            className="bg-primary text-primary-foreground font-bold px-6 hover:bg-primary/90"
+          >
+            {loading ? "Signing up..." : "Sign-up"}
+          </Button>
+          <span className="text-muted-foreground">|</span>
+          <Button
+            variant="ghost"
+            onClick={() => onOpenChange(false)}
+            className="font-bold text-foreground"
+          >
+            CANCEL
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
