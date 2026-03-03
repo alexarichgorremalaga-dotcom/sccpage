@@ -1,13 +1,8 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { GraduationCap, UserPlus, LogIn, BookOpen, Building } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { GraduationCap, BookOpen, Building } from "lucide-react";
+import EnrollmentDialog from "@/components/EnrollmentDialog";
 
 const admissionRequirements = [
   {
@@ -72,8 +67,8 @@ const Admission = () => {
     setDialogOpen(true);
   };
 
-  const levelTitle =
-    selectedLevel === "basic" ? "Basic Education" : "Higher Education";
+
+
 
   return (
     <div className="min-h-screen bg-background font-body">
@@ -146,51 +141,11 @@ const Admission = () => {
         </section>
 
         {/* Enrollment Dialog */}
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle className="font-heading text-2xl text-center uppercase">
-                {levelTitle}
-              </DialogTitle>
-            </DialogHeader>
-
-            <div className="space-y-6 py-4">
-              {/* New Learners */}
-              <div className="text-center p-6 bg-secondary rounded-lg">
-                <UserPlus className="w-10 h-10 mx-auto mb-3 text-gold" />
-                <h4 className="font-heading font-bold text-foreground mb-1">
-                  NEW Learners
-                </h4>
-                <p className="text-muted-foreground text-sm mb-4">
-                  (without Account)
-                </p>
-                <a
-                  href="#sign-up"
-                  className="inline-block bg-gold text-accent-foreground font-semibold px-8 py-2.5 rounded-md hover:bg-gold-dark transition-colors"
-                >
-                  SIGN-UP
-                </a>
-              </div>
-
-              {/* Old and New Learners */}
-              <div className="text-center p-6 bg-secondary rounded-lg">
-                <LogIn className="w-10 h-10 mx-auto mb-3 text-gold" />
-                <h4 className="font-heading font-bold text-foreground mb-1">
-                  OLD and NEW Learners
-                </h4>
-                <p className="text-muted-foreground text-sm mb-4">
-                  (with Account)
-                </p>
-                <a
-                  href="#sign-in"
-                  className="inline-block bg-primary text-primary-foreground font-semibold px-8 py-2.5 rounded-md hover:opacity-90 transition-opacity"
-                >
-                  SIGN-IN
-                </a>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <EnrollmentDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          level={selectedLevel}
+        />
 
         {/* Admission Requirements */}
         <section className="py-16 md:py-24 bg-secondary">
