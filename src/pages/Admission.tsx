@@ -66,19 +66,19 @@ type EducationLevel = "basic" | "higher" | null;
 
 const BASIC_ED_OLD_LEARNER_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSf8k95H0N5PA8pO_ISi1ycatzt2JROk4-Pr8WbtgrBpE08Jbw/viewform";
 const BASIC_ED_NEW_LEARNER_FORM = "https://docs.google.com/forms/d/e/1FAIpQLScPwCEEpSAxCO5E6l0WrWInGmCGStXPP8QeW-KuJzDfu_EGXw/viewform";
+const HIGHER_ED_NEW_LEARNER_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSfjK9yx1Niq0WP2dz4Cbu1EQ57So7Y28bYUEl6x9V48uYbC8Q/viewform?usp=publish-editor";
+const HIGHER_ED_OLD_LEARNER_FORM = "https://forms.gle/icJ5CTkfvVEwiWZZA";
 
 const Admission = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedLevel, setSelectedLevel] = useState<EducationLevel>(null);
   const [showBasicOptions, setShowBasicOptions] = useState(false);
+  const [showHigherOptions, setShowHigherOptions] = useState(false);
 
   const openDialog = (level: EducationLevel) => {
     if (level === "basic") {
       setShowBasicOptions(true);
-      return;
+    } else if (level === "higher") {
+      setShowHigherOptions(true);
     }
-    setSelectedLevel(level);
-    setDialogOpen(true);
   };
 
 
