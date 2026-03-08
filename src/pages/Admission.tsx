@@ -185,12 +185,36 @@ const Admission = () => {
           </DialogContent>
         </Dialog>
 
-        {/* Higher Education Enrollment Dialog */}
-        <EnrollmentDialog
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          level={selectedLevel}
-        />
+        {/* Higher Education Options Dialog */}
+        <Dialog open={showHigherOptions} onOpenChange={setShowHigherOptions}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="font-heading text-lg text-foreground text-center">
+                Higher Education Enrollment
+              </DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <a
+                href={HIGHER_ED_NEW_LEARNER_FORM}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between bg-primary text-primary-foreground font-bold px-6 py-4 rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                New Learner (Enroll)
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </a>
+              <a
+                href={HIGHER_ED_OLD_LEARNER_FORM}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between bg-gold text-accent-foreground font-bold px-6 py-4 rounded-lg hover:bg-gold-dark transition-colors"
+              >
+                Returning Learner (Re-enroll)
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </a>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* Admission Requirements */}
         <section className="py-16 md:py-24 bg-secondary">
