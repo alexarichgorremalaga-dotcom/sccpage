@@ -2,7 +2,6 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { GraduationCap, BookOpen, Building, ExternalLink } from "lucide-react";
-import EnrollmentDialog from "@/components/EnrollmentDialog";
 import {
   Dialog,
   DialogContent,
