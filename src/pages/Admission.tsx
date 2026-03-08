@@ -2,7 +2,6 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { GraduationCap, BookOpen, Building, ExternalLink } from "lucide-react";
-import EnrollmentDialog from "@/components/EnrollmentDialog";
 import {
   Dialog,
   DialogContent,
@@ -66,19 +65,19 @@ type EducationLevel = "basic" | "higher" | null;
 
 const BASIC_ED_OLD_LEARNER_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSf8k95H0N5PA8pO_ISi1ycatzt2JROk4-Pr8WbtgrBpE08Jbw/viewform";
 const BASIC_ED_NEW_LEARNER_FORM = "https://docs.google.com/forms/d/e/1FAIpQLScPwCEEpSAxCO5E6l0WrWInGmCGStXPP8QeW-KuJzDfu_EGXw/viewform";
+const HIGHER_ED_NEW_LEARNER_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSfjK9yx1Niq0WP2dz4Cbu1EQ57So7Y28bYUEl6x9V48uYbC8Q/viewform?usp=publish-editor";
+const HIGHER_ED_OLD_LEARNER_FORM = "https://forms.gle/icJ5CTkfvVEwiWZZA";
 
 const Admission = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedLevel, setSelectedLevel] = useState<EducationLevel>(null);
   const [showBasicOptions, setShowBasicOptions] = useState(false);
+  const [showHigherOptions, setShowHigherOptions] = useState(false);
 
   const openDialog = (level: EducationLevel) => {
     if (level === "basic") {
       setShowBasicOptions(true);
-      return;
+    } else if (level === "higher") {
+      setShowHigherOptions(true);
     }
-    setSelectedLevel(level);
-    setDialogOpen(true);
   };
 
 
@@ -185,12 +184,36 @@ const Admission = () => {
           </DialogContent>
         </Dialog>
 
-        {/* Higher Education Enrollment Dialog */}
-        <EnrollmentDialog
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          level={selectedLevel}
-        />
+        {/* Higher Education Options Dialog */}
+        <Dialog open={showHigherOptions} onOpenChange={setShowHigherOptions}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="font-heading text-lg text-foreground text-center">
+                Higher Education Enrollment
+              </DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <a
+                href={HIGHER_ED_NEW_LEARNER_FORM}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between bg-primary text-primary-foreground font-bold px-6 py-4 rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                New Learner (Enroll)
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </a>
+              <a
+                href={HIGHER_ED_OLD_LEARNER_FORM}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between bg-gold text-accent-foreground font-bold px-6 py-4 rounded-lg hover:bg-gold-dark transition-colors"
+              >
+                Returning Learner (Re-enroll)
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </a>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* Admission Requirements */}
         <section className="py-16 md:py-24 bg-secondary">
