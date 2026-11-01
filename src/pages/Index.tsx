@@ -17,6 +17,7 @@ const Index = () => {
         <AboutSection />
         <HistorySection />
         <MissionVision />
+        <TechnoWeather />
       </main>
       
       <Footer />
