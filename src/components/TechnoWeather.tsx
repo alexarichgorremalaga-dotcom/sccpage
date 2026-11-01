@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import WeatherAdvisor from "./WeatherAdvisor";
 import {
   Cloud,
   CloudDrizzle,
@@ -184,6 +185,8 @@ const TechnoWeather = () => {
             </div>
           </div>
         )}
+
+        <WeatherAdvisor />
       </div>
     </section>
   );
