@@ -3,6 +3,7 @@ import HeroBanner from "@/components/HeroBanner";
 import AboutSection from "@/components/AboutSection";
 import HistorySection from "@/components/HistorySection";
 import MissionVision from "@/components/MissionVision";
+import TechnoWeather from "@/components/TechnoWeather";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -16,6 +17,7 @@ const Index = () => {
         <AboutSection />
         <HistorySection />
         <MissionVision />
+        <TechnoWeather />
       </main>
       
       <Footer />
