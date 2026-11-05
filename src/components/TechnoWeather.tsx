@@ -11,7 +11,16 @@ import {
   Droplets,
   Sun,
   Wind,
+  ExternalLink,
+  MapPinned,
+  RadioTower,
+  Radar,
+  ShieldAlert,
+  Satellite,
+  ThermometerSun,
+  Waves,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface WeatherData {
   current: {
@@ -81,6 +90,51 @@ const formatDay = (iso: string, idx: number) => {
   return date.toLocaleDateString("en-US", { weekday: "short" });
 };
 
+const PAGASA_RESOURCES = [
+  {
+    title: "Radar & satellite imagery",
+    description: "View live Doppler radar, rainfall layers, lightning, and Himawari satellite imagery.",
+    href: "https://panahon.gov.ph/",
+    label: "Open live map",
+    Icon: Radar,
+  },
+  {
+    title: "Tropical cyclone bulletins",
+    description: "Check the latest severe weather bulletins, storm location, and warnings.",
+    href: "https://www.pagasa.dost.gov.ph/tropical-cyclone/severe-weather-bulletin",
+    label: "View bulletins",
+    Icon: RadioTower,
+  },
+  {
+    title: "Rainfall & thunderstorm warnings",
+    description: "Review rainfall alert levels and thunderstorm advisories for affected areas.",
+    href: "https://www.pagasa.dost.gov.ph/information/rainfall-and-thunderstorm-warning-system",
+    label: "Check warnings",
+    Icon: ShieldAlert,
+  },
+  {
+    title: "Flood advisories",
+    description: "Monitor river-basin forecasts, flood bulletins, and dam conditions.",
+    href: "https://www.pagasa.dost.gov.ph/flood",
+    label: "View advisories",
+    Icon: Waves,
+  },
+  {
+    title: "Heat index",
+    description: "See PAGASA-reported heat index values and related heat safety information.",
+    href: "https://www.pagasa.dost.gov.ph/weather/heat-index?f=",
+    label: "View heat index",
+    Icon: ThermometerSun,
+  },
+  {
+    title: "Visayas local forecast",
+    description: "Read the regional forecast and extended outlook for the Visayas.",
+    href: "https://www.pagasa.dost.gov.ph/regional-forecast/visprsd",
+    label: "View regional forecast",
+    Icon: MapPinned,
+  },
+];
+
 const TechnoWeather = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["techno-weather-carcar"],
@@ -93,35 +147,49 @@ const TechnoWeather = () => {
   const CurrentIcon = current ? describe(current.weather_code).Icon : Sun;
 
   return (
-    <section className="py-16 md:py-24 bg-secondary/40">
+    <section className="py-16 md:py-24 bg-secondary/40" id="techno-weather">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
             techno<span className="text-gold">WEATHER</span> Updates
           </h2>
           <div className="w-24 h-1 bg-gold mx-auto mb-4"></div>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Live weather updates for Carcar City, Cebu — powered by our
-            Catherinean tech community.
+            Philippine weather information and official safety updates, with a local forecast for Carcar City, Cebu.
           </p>
         </div>
 
+        <div className="max-w-6xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-3 border-y border-border py-3">
+          <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+            <span className="h-2.5 w-2.5 rounded-full bg-gold" aria-hidden="true" />
+            Weather information desk
+          </div>
+          <a
+            href="https://www.pagasa.dost.gov.ph/weather/"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
+          >
+            PAGASA national forecast <ExternalLink className="h-4 w-4" />
+          </a>
+        </div>
+
         {isLoading && (
-          <div className="max-w-4xl mx-auto bg-card rounded-lg shadow-lg border border-border p-10 text-center text-muted-foreground">
+          <div className="max-w-6xl mx-auto bg-card rounded-lg border border-border p-10 text-center text-muted-foreground">
             Loading weather updates…
           </div>
         )}
 
         {isError && (
-          <div className="max-w-4xl mx-auto bg-card rounded-lg shadow-lg border border-border p-10 text-center text-muted-foreground">
+          <div className="max-w-6xl mx-auto bg-card rounded-lg border border-border p-10 text-center text-muted-foreground">
             Weather updates are unavailable right now. Please check back later.
           </div>
         )}
 
         {data && current && (
-          <div className="max-w-4xl mx-auto grid md:grid-cols-5 gap-6">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-6">
             {/* Current Conditions */}
-            <div className="md:col-span-2 bg-primary text-primary-foreground rounded-lg shadow-lg p-6 flex flex-col items-center justify-center text-center">
+            <div className="md:col-span-2 bg-primary text-primary-foreground rounded-lg p-6 flex flex-col items-center justify-center text-center">
               <p className="text-xs uppercase tracking-widest text-primary-foreground/70 mb-2">
                 Current Conditions
               </p>
@@ -148,7 +216,7 @@ const TechnoWeather = () => {
             </div>
 
             {/* Forecast */}
-            <div className="md:col-span-3 bg-card rounded-lg shadow-lg border border-border p-6">
+            <div className="md:col-span-3 bg-card rounded-lg border border-border p-6">
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
                 4-Day Forecast
               </p>
@@ -185,6 +253,37 @@ const TechnoWeather = () => {
             </div>
           </div>
         )}
+
+        <div className="max-w-6xl mx-auto mt-12">
+          <div className="mb-5 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">Official sources</p>
+              <h3 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Monitor conditions across the Philippines</h3>
+            </div>
+            <Satellite className="hidden sm:block h-8 w-8 text-gold" aria-hidden="true" />
+          </div>
+
+          <div className="grid gap-x-6 md:grid-cols-2 lg:grid-cols-3">
+            {PAGASA_RESOURCES.map(({ title, description, href, label, Icon }) => (
+              <article key={title} className="flex min-h-48 flex-col border-t-2 border-gold py-5">
+                <div className="mb-3 flex items-center gap-3">
+                  <Icon className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                  <h4 className="font-heading text-lg font-bold text-foreground">{title}</h4>
+                </div>
+                <p className="mb-4 flex-1 text-sm leading-6 text-muted-foreground">{description}</p>
+                <Button variant="outline" size="sm" asChild className="w-fit">
+                  <a href={href} target="_blank" rel="noreferrer">
+                    {label}<ExternalLink className="h-4 w-4" />
+                  </a>
+                </Button>
+              </article>
+            ))}
+          </div>
+
+          <p className="mt-2 text-xs leading-5 text-muted-foreground">
+            Official warnings, bulletins, radar, and satellite information open on PAGASA and PANaHON. The Carcar City conditions and four-day forecast above are provided by Open-Meteo; consult PAGASA for official alerts.
+          </p>
+        </div>
 
         <WeatherAdvisor />
       </div>
