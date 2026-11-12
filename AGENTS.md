@@ -1,0 +1,1 @@
+- Keep the weather monitor client-side: fetch location forecasts from Open-Meteo and render the Philippines overview as an in-page SVG map, avoiding external map/link dependencies.

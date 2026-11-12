@@ -9,18 +9,10 @@ import {
   CloudSnow,
   Cloudy,
   Droplets,
+  MapPin,
   Sun,
   Wind,
-  ExternalLink,
-  MapPinned,
-  RadioTower,
-  Radar,
-  ShieldAlert,
-  Satellite,
-  ThermometerSun,
-  Waves,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 interface WeatherData {
   current: {
@@ -31,7 +23,7 @@ interface WeatherData {
     wind_speed_10m: number;
     precipitation: number;
   };
-  daily: {
+  daily?: {
     time: string[];
     weather_code: number[];
     temperature_2m_max: number[];
@@ -41,6 +33,18 @@ interface WeatherData {
 }
 
 const CARCAR_CITY = { latitude: 10.1056, longitude: 123.642 };
+
+const PHILIPPINE_CITIES = [
+  { name: "Laoag", region: "Ilocos Norte", latitude: 18.1978, longitude: 120.5957, x: 167, y: 105 },
+  { name: "Baguio", region: "Cordillera", latitude: 16.4023, longitude: 120.596, x: 168, y: 173 },
+  { name: "Manila", region: "Metro Manila", latitude: 14.5995, longitude: 120.9842, x: 182, y: 241 },
+  { name: "Legazpi", region: "Bicol", latitude: 13.1391, longitude: 123.7438, x: 283, y: 296 },
+  { name: "Puerto Princesa", region: "Palawan", latitude: 9.7392, longitude: 118.7353, x: 100, y: 423 },
+  { name: "Cebu City", region: "Central Visayas", latitude: 10.3157, longitude: 123.8854, x: 288, y: 402 },
+  { name: "Tacloban", region: "Eastern Visayas", latitude: 11.2543, longitude: 125.003, x: 329, y: 367 },
+  { name: "Zamboanga", region: "Zamboanga Peninsula", latitude: 6.9214, longitude: 122.079, x: 222, y: 530 },
+  { name: "Davao City", region: "Davao Region", latitude: 7.1907, longitude: 125.4553, x: 351, y: 523 },
+];
 
 const weatherCodeMap: Record<
   number,
@@ -72,16 +76,35 @@ const weatherCodeMap: Record<
 const describe = (code: number) =>
   weatherCodeMap[code] ?? { label: "Uncertain", Icon: Cloudy, day: false };
 
-const fetchWeather = async (): Promise<WeatherData> => {
+const fetchWeather = async (
+  location: { latitude: number; longitude: number },
+  includeDaily = false,
+): Promise<WeatherData> => {
   const url =
-    `https://api.open-meteo.com/v1/forecast?latitude=${CARCAR_CITY.latitude}` +
-    `&longitude=${CARCAR_CITY.longitude}` +
-    `&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation` +
-    `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max` +
-    `&timezone=Asia%2FManila&forecast_days=4`;
+    `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}` +
+    `&longitude=${location.longitude}` +
+    "&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation" +
+    (includeDaily
+      ? "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=4"
+      : "") +
+    "&timezone=Asia%2FManila";
   const res = await fetch(url);
   if (!res.ok) throw new Error("Unable to load weather data");
   return res.json();
+};
+
+const fetchWeatherDesk = async () => {
+  const [carcar, ...cityConditions] = await Promise.all([
+    fetchWeather(CARCAR_CITY, true),
+    ...PHILIPPINE_CITIES.map((city) => fetchWeather(city)),
+  ]);
+  return {
+    carcar,
+    cities: PHILIPPINE_CITIES.map((city, index) => ({
+      ...city,
+      weather: cityConditions[index],
+    })),
+  };
 };
 
 const formatDay = (iso: string, idx: number) => {
@@ -90,60 +113,15 @@ const formatDay = (iso: string, idx: number) => {
   return date.toLocaleDateString("en-US", { weekday: "short" });
 };
 
-const PAGASA_RESOURCES = [
-  {
-    title: "Radar & satellite imagery",
-    description: "View live Doppler radar, rainfall layers, lightning, and Himawari satellite imagery.",
-    href: "https://panahon.gov.ph/",
-    label: "Open live map",
-    Icon: Radar,
-  },
-  {
-    title: "Tropical cyclone bulletins",
-    description: "Check the latest severe weather bulletins, storm location, and warnings.",
-    href: "https://www.pagasa.dost.gov.ph/tropical-cyclone/severe-weather-bulletin",
-    label: "View bulletins",
-    Icon: RadioTower,
-  },
-  {
-    title: "Rainfall & thunderstorm warnings",
-    description: "Review rainfall alert levels and thunderstorm advisories for affected areas.",
-    href: "https://www.pagasa.dost.gov.ph/information/rainfall-and-thunderstorm-warning-system",
-    label: "Check warnings",
-    Icon: ShieldAlert,
-  },
-  {
-    title: "Flood advisories",
-    description: "Monitor river-basin forecasts, flood bulletins, and dam conditions.",
-    href: "https://www.pagasa.dost.gov.ph/flood",
-    label: "View advisories",
-    Icon: Waves,
-  },
-  {
-    title: "Heat index",
-    description: "See PAGASA-reported heat index values and related heat safety information.",
-    href: "https://www.pagasa.dost.gov.ph/weather/heat-index?f=",
-    label: "View heat index",
-    Icon: ThermometerSun,
-  },
-  {
-    title: "Visayas local forecast",
-    description: "Read the regional forecast and extended outlook for the Visayas.",
-    href: "https://www.pagasa.dost.gov.ph/regional-forecast/visprsd",
-    label: "View regional forecast",
-    Icon: MapPinned,
-  },
-];
-
 const TechnoWeather = () => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["techno-weather-carcar"],
-    queryFn: fetchWeather,
+    queryKey: ["techno-weather-philippines"],
+    queryFn: fetchWeatherDesk,
     staleTime: 10 * 60 * 1000,
     refetchInterval: 10 * 60 * 1000,
   });
 
-  const current = data?.current;
+  const current = data?.carcar.current;
   const CurrentIcon = current ? describe(current.weather_code).Icon : Sun;
 
   return (
@@ -155,23 +133,8 @@ const TechnoWeather = () => {
           </h2>
           <div className="w-24 h-1 bg-gold mx-auto mb-4"></div>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Philippine weather information and official safety updates, with a local forecast for Carcar City, Cebu.
+            Current weather conditions across selected Philippine locations, with a local forecast for Carcar City, Cebu.
           </p>
-        </div>
-
-        <div className="max-w-6xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-3 border-y border-border py-3">
-          <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-            <span className="h-2.5 w-2.5 rounded-full bg-gold" aria-hidden="true" />
-            Weather information desk
-          </div>
-          <a
-            href="https://www.pagasa.dost.gov.ph/weather/"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
-          >
-            PAGASA national forecast <ExternalLink className="h-4 w-4" />
-          </a>
         </div>
 
         {isLoading && (
@@ -186,104 +149,141 @@ const TechnoWeather = () => {
           </div>
         )}
 
-        {data && current && (
-          <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-6">
-            {/* Current Conditions */}
-            <div className="md:col-span-2 bg-primary text-primary-foreground rounded-lg p-6 flex flex-col items-center justify-center text-center">
-              <p className="text-xs uppercase tracking-widest text-primary-foreground/70 mb-2">
-                Current Conditions
-              </p>
-              <CurrentIcon
-                className="w-16 h-16 text-gold mb-3"
-                strokeWidth={1.5}
-              />
-              <p className="font-heading text-5xl font-bold mb-1">
-                {Math.round(current.temperature_2m)}&deg;C
-              </p>
-              <p className="text-primary-foreground/80 text-sm mb-6">
-                {describe(current.weather_code).label}
-              </p>
-              <div className="grid grid-cols-2 gap-4 w-full text-sm">
-                <div className="flex items-center justify-center gap-2">
-                  <Droplets className="w-4 h-4 text-gold" />
-                  <span>{current.relative_humidity_2m}% Humidity</span>
+        {data && current && data.carcar.daily && (
+          <>
+            <div className="max-w-6xl mx-auto mb-12">
+              <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-border pb-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+                    Philippine conditions
+                  </p>
+                  <h3 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
+                    Monitor conditions across the Philippines
+                  </h3>
                 </div>
-                <div className="flex items-center justify-center gap-2">
-                  <Wind className="w-4 h-4 text-gold" />
-                  <span>{Math.round(current.wind_speed_10m)} km/h</span>
+                <p className="text-sm text-muted-foreground">Model-based current conditions</p>
+              </div>
+
+              <div className="grid gap-8 lg:grid-cols-[minmax(18rem,0.85fr)_minmax(0,1.15fr)] lg:gap-12">
+                <div className="flex flex-col items-center">
+                  <svg
+                    viewBox="0 0 420 620"
+                    className="h-[26rem] w-auto max-w-full md:h-[34rem]"
+                    role="img"
+                    aria-label="Map of the Philippines with numbered weather locations from north to south"
+                  >
+                    <g className="fill-secondary stroke-border" strokeWidth="2" strokeLinejoin="round">
+                      <path d="M187 62 207 72 222 90 230 111 225 131 237 150 228 169 231 184 217 201 215 218 198 232 193 251 180 241 174 222 160 209 151 190 142 176 150 159 145 143 155 128 150 115 165 96 174 78Z" />
+                      <path d="m141 251 17 5 6 14-7 20-14 12-13-7-2-16Z" />
+                      <path d="m130 302 11 4 3 17-9 10-10-9Z" />
+                      <path d="m133 343 12 8-5 16-11 2-5-13Z" />
+                      <path d="m123 371 9 4-3 12-8-3Z" />
+                      <path d="m119 396 8 3-4 13-8-4Z" />
+                      <path d="m112 421 7 3-3 15-8-5Z" />
+                      <path d="m102 448 8 3-3 17-8-4Z" />
+                      <path d="m91 477 8 2-5 14-7-4Z" />
+                      <path d="m80 505 8 2-6 14-7-3Z" />
+                      <path d="m234 344 20-5 13 9-3 17-16 9-15-7-6-12Z" />
+                      <path d="m267 356 8-5 6 20-4 28-6 23-6-8 4-25-5-16Z" />
+                      <path d="m291 356 12-6 17 8 4 18-13 11-17-7-5-12Z" />
+                      <path d="m321 372 12-5 11 9-4 18-13 7-8-12Z" />
+                      <path d="m289 449 20-13 27 2 22 14 16 23-8 22-20 12-8 20-18 19-24-4-15-18-20-9-8-20 10-20-1-15Z" />
+                      <path d="m185 528 18-3 12 8-8 12-16 1-9-8Z" />
+                      <path d="m200 67 5-4 4 6-5 5Z" />
+                      <path d="m209 58 4-4 4 5-4 4Z" />
+                    </g>
+                    {data.cities.map((city, index) => (
+                      <g key={city.name} transform={`translate(${city.x} ${city.y})`}>
+                        <circle r="13" className="fill-primary stroke-background" strokeWidth="3" />
+                        <text
+                          textAnchor="middle"
+                          dominantBaseline="central"
+                          className="fill-primary-foreground"
+                          fontSize="11"
+                          fontWeight="700"
+                        >
+                          {index + 1}
+                        </text>
+                        <title>{`${city.name}: ${Math.round(city.weather.current.temperature_2m)}°C, ${describe(city.weather.current.weather_code).label}`}</title>
+                      </g>
+                    ))}
+                  </svg>
+                  <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+                    <MapPin className="h-4 w-4 text-primary" aria-hidden="true" />
+                    <span>Numbered markers match the city list</span>
+                  </div>
+                </div>
+
+                <div className="divide-y divide-border border-y border-border">
+                  {data.cities.map((city, index) => {
+                    const conditions = city.weather.current;
+                    const { label, Icon } = describe(conditions.weather_code);
+                    return (
+                      <article
+                        key={city.name}
+                        className="grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-x-3 py-3.5"
+                      >
+                        <span className="row-span-2 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                          {index + 1}
+                        </span>
+                        <div className="min-w-0">
+                          <h4 className="truncate font-semibold text-foreground">{city.name}</h4>
+                          <p className="truncate text-xs text-muted-foreground">{city.region} · {label}</p>
+                        </div>
+                        <div className="flex items-center gap-2 text-right">
+                          <Icon className="hidden h-5 w-5 text-gold sm:block" aria-hidden="true" />
+                          <span className="font-heading text-xl font-bold text-foreground">
+                            {Math.round(conditions.temperature_2m)}°
+                          </span>
+                        </div>
+                        <div className="col-start-2 col-span-2 mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                          <span>Feels {Math.round(conditions.apparent_temperature)}°C</span>
+                          <span>Rain {conditions.precipitation} mm</span>
+                          <span>Wind {Math.round(conditions.wind_speed_10m)} km/h</span>
+                        </div>
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
             </div>
 
-            {/* Forecast */}
-            <div className="md:col-span-3 bg-card rounded-lg border border-border p-6">
-              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
-                4-Day Forecast
-              </p>
-              <div className="divide-y divide-border">
-                {data.daily.time.map((iso, idx) => {
-                  const { label, Icon } = describe(data.daily.weather_code[idx]);
+            <div className="max-w-6xl mx-auto mb-10 border-t border-border pt-6">
+              <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+                    Carcar City, Cebu
+                  </p>
+                  <h3 className="font-heading text-2xl font-bold text-foreground">Local 4-day forecast</h3>
+                </div>
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1.5"><CurrentIcon className="h-5 w-5 text-gold" aria-hidden="true" />{describe(current.weather_code).label}</span>
+                  <span className="font-heading text-2xl font-bold text-foreground">{Math.round(current.temperature_2m)}°C</span>
+                </div>
+              </div>
+              <div className="grid divide-y divide-border border-y border-border sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+                {data.carcar.daily.time.map((iso, index) => {
+                  const { label, Icon } = describe(data.carcar.daily?.weather_code[index] ?? 3);
                   return (
-                    <div
-                      key={iso}
-                      className="flex items-center gap-4 py-3 first:pt-0"
-                    >
-                      <span className="font-heading font-bold text-foreground w-16">
-                        {formatDay(iso, idx)}
-                      </span>
-                      <Icon
-                        className="w-6 h-6 text-gold shrink-0"
-                        strokeWidth={1.75}
-                      />
-                      <span className="text-sm text-muted-foreground hidden sm:block flex-1 truncate">
-                        {label}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {data.daily.precipitation_probability_max[idx]}% rain
-                      </span>
-                      <span className="ml-auto font-semibold text-foreground text-sm">
-                        {Math.round(data.daily.temperature_2m_min[idx])}
-                        &deg; / {Math.round(data.daily.temperature_2m_max[idx])}
-                        &deg;
-                      </span>
+                    <div key={iso} className="flex items-center gap-3 py-4 sm:px-4 first:sm:pl-0 last:sm:pr-0">
+                      <Icon className="h-6 w-6 shrink-0 text-gold" aria-hidden="true" />
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-foreground">{formatDay(iso, index)}</p>
+                        <p className="truncate text-xs text-muted-foreground">{label} · {data.carcar.daily?.precipitation_probability_max[index]}% rain</p>
+                      </div>
+                      <p className="whitespace-nowrap text-sm font-semibold text-foreground">
+                        {Math.round(data.carcar.daily?.temperature_2m_min[index] ?? 0)}° / {Math.round(data.carcar.daily?.temperature_2m_max[index] ?? 0)}°
+                      </p>
                     </div>
                   );
                 })}
               </div>
+              <p className="mt-3 text-xs leading-5 text-muted-foreground">
+                Conditions and forecasts are model-based weather information, not official PAGASA bulletins or warnings. The nationwide overview covers selected locations; it does not replace local emergency advisories.
+              </p>
             </div>
-          </div>
+          </>
         )}
-
-        <div className="max-w-6xl mx-auto mt-12">
-          <div className="mb-5 flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">Official sources</p>
-              <h3 className="font-heading text-2xl md:text-3xl font-bold text-foreground">Monitor conditions across the Philippines</h3>
-            </div>
-            <Satellite className="hidden sm:block h-8 w-8 text-gold" aria-hidden="true" />
-          </div>
-
-          <div className="grid gap-x-6 md:grid-cols-2 lg:grid-cols-3">
-            {PAGASA_RESOURCES.map(({ title, description, href, label, Icon }) => (
-              <article key={title} className="flex min-h-48 flex-col border-t-2 border-gold py-5">
-                <div className="mb-3 flex items-center gap-3">
-                  <Icon className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-                  <h4 className="font-heading text-lg font-bold text-foreground">{title}</h4>
-                </div>
-                <p className="mb-4 flex-1 text-sm leading-6 text-muted-foreground">{description}</p>
-                <Button variant="outline" size="sm" asChild className="w-fit">
-                  <a href={href} target="_blank" rel="noreferrer">
-                    {label}<ExternalLink className="h-4 w-4" />
-                  </a>
-                </Button>
-              </article>
-            ))}
-          </div>
-
-          <p className="mt-2 text-xs leading-5 text-muted-foreground">
-            Official warnings, bulletins, radar, and satellite information open on PAGASA and PANaHON. The Carcar City conditions and four-day forecast above are provided by Open-Meteo; consult PAGASA for official alerts.
-          </p>
-        </div>
 
         <WeatherAdvisor />
       </div>
